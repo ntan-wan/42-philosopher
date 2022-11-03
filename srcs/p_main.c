@@ -6,23 +6,41 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:06:25 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/03 11:14:59 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/03 16:10:16 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-#include <stdio.h>
-int main()
+
+time_t p_get_millisecond(void)
 {
-    struct timeval tv;
-    struct timezone tz;
+	struct timeval	current_time;
 
-    gettimeofday(&tv,&tz);
+	gettimeofday(&current_time, NULL);
+	return ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
 
-    printf("Seconds since 1/1/1970: %lu\n",tv.tv_sec);
-    printf("Microseconds: %d\n",tv.tv_usec);
-    printf("Minutes west of Greenwich: %d\n",tz.tz_minuteswest);
-    printf("Daylight Saving Time adjustment: %d\n",tz.tz_dsttime);
+}
 
-    return(0);
+pthread_mutex_t **p_init_forks(int forks_total)
+{
+	int	i;
+	pthread_mutex_t	**forks;
+
+	forks = (pthread_mutex_t **)malloc(sizeof(pthread_mutex_t *) * (forks_total + 1));
+	if (!forks)
+		return (NULL);
+	forks[forks_total] = NULL;
+	i = -1;
+	while (++i < forks_total)
+		pthread_mutex_init(forks[i], NULL);
+	return (forks);
+}
+
+int main(int ac, char **av)
+{
+	(void)ac;
+	(void)av;
+
+	printf("%ld\n", p_get_millisecond());
+	return (0);
 }
