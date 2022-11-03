@@ -1,5 +1,9 @@
 NAME = philo
-PTHREAD_LIB = -lpthread -lrt
+UNAME = $(shell uname)
+
+ifeq ($(UNAME), Linux)
+	PTHREAD_LIB = -lpthread -lrt
+endif
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
