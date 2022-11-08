@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 06:50:42 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 07:04:12 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:04:26 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	p_init_philos(t_data *data)
 		data->philos[i].right_fork = (i + 1) % data->philo_total;
 		data->philos[i].meals = 0;
 		data->philos[i].eating = 0;
-		data->philos[i].main_data = data;
+		data->philos[i].base_data = data;
 		i++;
 	}
 }

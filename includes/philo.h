@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 10:30:52 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:45:19 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_philo
 	size_t			eating;
 	size_t			last_meal;
 	size_t			threshold;
-	struct	s_data	*main_data;
+	struct	s_data	*base_data;
 }	t_philo;
 
 typedef	struct s_data
@@ -65,8 +65,8 @@ typedef	struct s_data
 	pthread_mutex_t	*forks_mutex;
 }	t_data;
 
-void	p_print_msg(t_philo *philo, size_t timestamp, int action);
-void	p_usleep(size_t ms);
+void	p_util_log(t_philo *philo, size_t timestamp, int action);
+void	p_util_usleep(size_t ms);
 
 /* init_utils */
 void	p_init_forks(t_data *data);
@@ -79,5 +79,8 @@ size_t	p_atoi_unsigned_int(const char *str);
 void	p_input_parse(t_data *data, char **av);
 
 /* philo_utils */
-void	p_philo_routine_start(t_data *data);
+void	p_routine_start(t_data *data);
+
+/* other_utils */
+size_t	p_util_get_milisecond(void);
 #endif
