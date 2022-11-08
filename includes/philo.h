@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/07 21:14:25 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/08 10:30:52 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define ERROR 0
-# define VALID 1
-# define WRONG_ARGUMENT -1
-# define TOO_MANY_ARGUMENTS -2
-# define MALLOC_ERROR -3
-# define PTHREAD_ERROR -4
+# define VALID 0
+# define ERROR 1
+# define INVALID_NUM_ARGS -1
+# define WRONG_ARGUMENT -2
+# define INVALID_CHAR -3
+// # define WRONG_ARGUMENT -1
+// # define TOO_MANY_ARGUMENTS -2
+// # define MALLOC_ERROR -3
+// # define PTHREAD_ERROR -4
 
 typedef enum e_action
 {
@@ -55,7 +58,7 @@ typedef	struct s_data
 	size_t			time_to_sleep;
 	size_t			meals;
 	size_t			finished;
-	t_philo			*philosophers;
+	t_philo			*philos;
 	int				*forks;
 	pthread_mutex_t	die_mutex;
 	pthread_mutex_t	write_mutex;
@@ -65,13 +68,16 @@ typedef	struct s_data
 void	p_print_msg(t_philo *philo, size_t timestamp, int action);
 void	p_usleep(size_t ms);
 
-/* philo_utils */
+/* init_utils */
 void	p_init_forks(t_data *data);
 void	p_init_philos(t_data *data);
 void	p_init_mutexes(t_data *data);
 
 /* input_utils */
-int 	is_valid_input(int ac, char **av);
-size_t	ft_atoi_unsigned_int(const char *str);
+int 	p_is_invalid_input(int ac, char **av);
+size_t	p_atoi_unsigned_int(const char *str);
 void	p_input_parse(t_data *data, char **av);
+
+/* philo_utils */
+void	p_philo_routine_start(t_data *data);
 #endif
