@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:38:44 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 11:43:18 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:25:12 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	p_util_usleep(size_t ms)
 		usleep(ms / 1000);
 }
 
-void	p_util_log(t_philo *philo, size_t timestamp, int action)
+void	p_util_log(size_t timestamp, t_philo *philo, int action)
 {
 	pthread_mutex_lock(&philo->base_data->write_mutex);
 	if (action == TAKING_FORK)

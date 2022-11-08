@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 11:45:19 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:25:32 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef	struct s_data
 	pthread_mutex_t	*forks_mutex;
 }	t_data;
 
-void	p_util_log(t_philo *philo, size_t timestamp, int action);
 void	p_util_usleep(size_t ms);
 
 /* init_utils */
@@ -83,4 +82,5 @@ void	p_routine_start(t_data *data);
 
 /* other_utils */
 size_t	p_util_get_milisecond(void);
+void	p_util_log(size_t timestamp, t_philo *philo, int action);
 #endif
