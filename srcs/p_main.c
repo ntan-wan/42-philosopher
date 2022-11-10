@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:06:25 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 11:43:59 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:31:35 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ static void	p_data_clear_all(t_data *data)
 	i = 0;
 	while (i < data->philo_total)
 	{
-		pthread_mutex_destroy(&data->forks_mutex[i]);
+		pthread_mutex_destroy(&data->mutex_forks[i]);
+		pthread_mutex_destroy(&data->philos[i].eat);
+		free(data->philos[i].eat);
 		i++;
 	}
-	pthread_mutex_destroy(&data->write_mutex);
-	pthread_mutex_destroy(&data->die_mutex);
+	pthread_mutex_destroy(&data->mutex_log);
+	pthread_mutex_destroy(&data->mutex_routine_end);
 	free(data->forks);
 	free(data->philos);
-	free(data->forks_mutex);
+	free(data->mutex_forks);
 }
 
 int	main(int ac, char **av)
@@ -39,9 +41,9 @@ int	main(int ac, char **av)
 	p_init_philos(&data);
 	p_init_forks(&data);
 	p_init_mutexes(&data);
+	pthread_mutex_lock(&data.mutex_routine_end);
 	p_routine_start(&data);
-	pthread_mutex_lock(&data.die_mutex);
-	pthread_mutex_unlock(&data.die_mutex);
+	pthread_mutex_lock(&data.mutex_routine_end);
 	p_data_clear_all(&data);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 12:25:32 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/09 20:15:46 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,34 +38,45 @@ typedef enum e_action
 	OVER,
 }				t_action;
 
-typedef struct s_philo
+/*typedef struct s_philo
 {
 	size_t			position;
 	size_t			left_fork;
 	size_t			right_fork;
 	size_t			meals;
 	size_t			eating;
-	size_t			last_meal;
-	size_t			threshold;
+	size_t			time_last_meal;
+	size_t			time_limit_to_eat;
+	struct	s_data	*base_data;
+}	t_philo;*/
+
+typedef struct s_philo
+{
+	size_t			position;
+	size_t			left_fork;
+	size_t			right_fork;
+	size_t			eating;
+	size_t			time_last_meal;
+	size_t			time_limit_to_eat;
+	pthread_mutex_t	*eat;
 	struct	s_data	*base_data;
 }	t_philo;
 
 typedef	struct s_data
 {
+	t_philo			*philos;
+	size_t			philo_died;
 	size_t			philo_total;
 	size_t			time_to_eat;
 	size_t			time_to_die;
 	size_t			time_to_sleep;
-	size_t			meals;
-	size_t			finished;
-	t_philo			*philos;
-	int				*forks;
-	pthread_mutex_t	die_mutex;
-	pthread_mutex_t	write_mutex;
-	pthread_mutex_t	*forks_mutex;
+	size_t			meals_minimum;
+	size_t			meals_total_all_eaten;
+	size_t			meals_total_all;
+	pthread_mutex_t	*mutex_forks;
+	pthread_mutex_t	mutex_log;
+	pthread_mutex_t	mutex_routine_end;
 }	t_data;
-
-void	p_util_usleep(size_t ms);
 
 /* init_utils */
 void	p_init_forks(t_data *data);
@@ -81,6 +92,11 @@ void	p_input_parse(t_data *data, char **av);
 void	p_routine_start(t_data *data);
 
 /* other_utils */
-size_t	p_util_get_milisecond(void);
+void	p_util_usleep(size_t ms);
+size_t	p_util_get_time(void);
 void	p_util_log(size_t timestamp, t_philo *philo, int action);
+
+
+void	p_philo_sleep(t_philo *philo);
+void	p_philo_forks_take(t_philo *philo);
 #endif

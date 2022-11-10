@@ -6,13 +6,13 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 11:38:44 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/08 12:25:12 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:31:04 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-size_t	p_util_get_milisecond(void)
+size_t	p_util_get_time(void)
 {
 	static struct timeval tv;
 
@@ -24,14 +24,14 @@ void	p_util_usleep(size_t ms)
 {
 	size_t	end;
 
-	end = p_util_get_milisecond() + ms;
-	while (p_util_get_milisecond() < end)
+	end = p_util_get_time() + ms;
+	while (p_util_get_time() < end)
 		usleep(ms / 1000);
 }
 
 void	p_util_log(size_t timestamp, t_philo *philo, int action)
 {
-	pthread_mutex_lock(&philo->base_data->write_mutex);
+	pthread_mutex_lock(&philo->base_data->mutex_log);
 	if (action == TAKING_FORK)
 		printf("%zu %zu has taken a fork\n", timestamp, philo->position);
 	else if (action == EATING)
@@ -44,5 +44,5 @@ void	p_util_log(size_t timestamp, t_philo *philo, int action)
 		printf("%zu %zu died\n", timestamp, philo->position);
 	else if (action == OVER)
 		printf("%zu %zu has finished his meals\n", timestamp, philo->position);
-	pthread_mutex_unlock(&philo->base_data->write_mutex);
+	pthread_mutex_unlock(&philo->base_data->mutex_log);
 }
