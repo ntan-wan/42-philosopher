@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/09 20:15:46 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/13 22:36:26 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,47 +18,17 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define VALID 0
-# define ERROR 1
-# define INVALID_NUM_ARGS -1
-# define WRONG_ARGUMENT -2
-# define INVALID_CHAR -3
-// # define WRONG_ARGUMENT -1
-// # define TOO_MANY_ARGUMENTS -2
-// # define MALLOC_ERROR -3
-// # define PTHREAD_ERROR -4
-
-typedef enum e_action
-{
-	TAKING_FORK,
-	EATING,
-	SLEEPING,
-	THINKING,
-	DIED,
-	OVER,
-}				t_action;
-
-/*typedef struct s_philo
-{
-	size_t			position;
-	size_t			left_fork;
-	size_t			right_fork;
-	size_t			meals;
-	size_t			eating;
-	size_t			time_last_meal;
-	size_t			time_limit_to_eat;
-	struct	s_data	*base_data;
-}	t_philo;*/
-
+/*
 typedef struct s_philo
 {
-	size_t			position;
-	size_t			left_fork;
-	size_t			right_fork;
+	pthread_mutex_t	*eat;
 	size_t			eating;
+	size_t			position;
+	size_t			fork_left;
+	size_t			fork_right;
+	size_t			meals_count;
 	size_t			time_last_meal;
 	size_t			time_limit_to_eat;
-	pthread_mutex_t	*eat;
 	struct	s_data	*base_data;
 }	t_philo;
 
@@ -67,36 +37,81 @@ typedef	struct s_data
 	t_philo			*philos;
 	size_t			philo_died;
 	size_t			philo_total;
+	size_t			philos_finished_count;
 	size_t			time_to_eat;
 	size_t			time_to_die;
 	size_t			time_to_sleep;
 	size_t			meals_minimum;
-	size_t			meals_total_all_eaten;
-	size_t			meals_total_all;
+	// size_t			meals_total_all_eaten;
+	// size_t			meals_total_all;
 	pthread_mutex_t	*mutex_forks;
 	pthread_mutex_t	mutex_log;
 	pthread_mutex_t	mutex_routine_end;
 }	t_data;
+*/
+typedef enum e_validity
+{
+	VALID,
+	ERROR
+}	t_validity;
+
+typedef enum e_action
+{
+	TAKING_FORK,
+	RELEASE_FORK,
+	EATING,
+	SLEEP,
+	THINK,
+	DIED
+}	t_action;
+
+typedef struct	s_data
+{
+	size_t			philos_total;
+	size_t			time_to_eat;
+	size_t			time_to_die;
+	size_t			time_to_sleep;
+	size_t			time_routine_start;
+	size_t			meals_minimum;
+	pthread_mutex_t	*mutex_forks;
+	// pthread_mutex_t	mutex_routine_end;
+	pthread_mutex_t	mutex_simulation_end;
+}	t_data;
+
+typedef struct	s_philo
+{
+	pthread_t	pid;
+	size_t		fork_left;
+	size_t		fork_right;
+	size_t		meals_count;
+	size_t		time_last_meal;
+	size_t		time_limit_to_eat;
+	size_t		position_num;
+	t_data		*data;
+}	t_philo;
 
 /* init_utils */
-void	p_init_forks(t_data *data);
-void	p_init_philos(t_data *data);
 void	p_init_mutexes(t_data *data);
+void	p_init_philos(t_data *data, t_philo **philos);
 
-/* input_utils */
-int 	p_is_invalid_input(int ac, char **av);
-size_t	p_atoi_unsigned_int(const char *str);
-void	p_input_parse(t_data *data, char **av);
+/* input_check_utils */
+int	is_invalid_input(int ac, char **av);
 
-/* philo_utils */
-void	p_routine_start(t_data *data);
+/* routine */
+void	p_routine_start(t_data *data, t_philo *philos);
+
+/* action_utils */
+void    p_action_eat(t_philo *philo);
+void    p_action_sleep(t_philo *philo);
+void    p_action_take_forks(t_philo *philo);
+void    p_action_thinking(t_philo *philo);
 
 /* other_utils */
-void	p_util_usleep(size_t ms);
-size_t	p_util_get_time(void);
+size_t	p_util_get_millisecond(void);
+size_t	p_util_get_time(t_data *data);
+int		p_util_error_print(char *msg);
+size_t  p_util_a_to_unsigned_int(char *str);
 void	p_util_log(size_t timestamp, t_philo *philo, int action);
 
 
-void	p_philo_sleep(t_philo *philo);
-void	p_philo_forks_take(t_philo *philo);
 #endif
