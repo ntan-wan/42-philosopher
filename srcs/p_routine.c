@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 18:30:00 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 11:49:38 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:57:56 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	*p_routine_loop(void *philosopher)
 		// pthread_mutex_lock(&philo->data->mutex_routine_end);
 		if (p_is_dead(philo))
 			break ;
+		// else if (p_had_minimum_meals(philo))
+			// break ;
 		p_action_take_forks(philo);
 		p_action_eat(philo);
 		p_action_sleep(philo);

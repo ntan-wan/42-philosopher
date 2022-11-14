@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:36:29 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 10:23:31 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:58:10 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	p_action_release_forks(t_philo *philo)
 
 void    p_action_eat(t_philo *philo)
 {
+	philo->meals_count++;
 	philo->time_last_meal = p_util_get_time(philo->data);
 	philo->time_limit_to_eat = philo->time_last_meal + philo->data->time_to_die;
 	p_util_log(p_util_get_time(philo->data), philo, EATING);
@@ -52,5 +53,4 @@ void    p_action_sleep(t_philo *philo)
 void    p_action_thinking(t_philo *philo)
 {
 	p_util_log(p_util_get_time(philo->data), philo, THINK);
-	// p_util_log(0, philo, THINK);
 }
