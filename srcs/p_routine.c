@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 18:30:00 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/13 22:25:11 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:49:38 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	p_is_dead(t_philo *philo)
 {
 	size_t	current_time;
 	
+	pthread_mutex_lock(&philo->data->mutex_die);
 	current_time = p_util_get_time(philo->data);
 	if (current_time > philo->time_limit_to_eat)
 	{
@@ -23,11 +24,12 @@ static int	p_is_dead(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->mutex_simulation_end);
 		return (DIED);
 	}
+	pthread_mutex_unlock(&philo->data->mutex_die);
 	return (0);
 }
 
 /* 
-	we are going to assume the philosphers had their 
+	we are going to assume the philosphers had their first
 	meal even before the routine start. Hence we update
 	time_last_meal and time_limit_to_eat first.
  */
@@ -48,7 +50,6 @@ void	*p_routine_loop(void *philosopher)
 		p_action_sleep(philo);
 		p_action_thinking(philo);
 		// pthread_mutex_unlock(&philo->data->mutex_routine_end);
-		// usleep(1);
 	}
 	return (NULL);
 }
@@ -66,7 +67,7 @@ void	p_routine_start(t_data *data, t_philo *philos)
 	{
 		pthread_create(&philos[i].pid, NULL, p_routine_loop, philos + i);
 		pthread_detach(philos[i].pid);
-		usleep(50);
+		// usleep(50);
 		i++;
 	}
 	// i = 0;

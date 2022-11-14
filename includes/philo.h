@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/13 22:36:26 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:24:21 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct	s_data
 	size_t			time_to_sleep;
 	size_t			time_routine_start;
 	size_t			meals_minimum;
+	pthread_mutex_t	mutex_die;
 	pthread_mutex_t	*mutex_forks;
-	// pthread_mutex_t	mutex_routine_end;
 	pthread_mutex_t	mutex_simulation_end;
 }	t_data;
 

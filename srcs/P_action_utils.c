@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:36:29 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/13 22:27:10 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 10:23:31 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,23 @@
 
 void    p_action_take_forks(t_philo *philo)
 {
+	int	i;
+
+	i = -1;
 	pthread_mutex_lock(&philo->data->mutex_forks[philo->fork_left]);
-	p_util_log(p_util_get_time(philo->data), philo, TAKING_FORK);
 	pthread_mutex_lock(&philo->data->mutex_forks[philo->fork_right]);
-	p_util_log(p_util_get_time(philo->data), philo, TAKING_FORK);
+	while (++i < 2)
+		p_util_log(p_util_get_time(philo->data), philo, TAKING_FORK);
 }
 
 void	p_action_release_forks(t_philo *philo)
 {
-	// p_util_log(p_util_get_time(philo->data), philo, RELEASE_FORK);
+	int	i;
+
+	i = -1;
+	while (++i < 2)
+		p_util_log(p_util_get_time(philo->data), philo, RELEASE_FORK);
 	pthread_mutex_unlock(&philo->data->mutex_forks[philo->fork_left]);
-	// p_util_log(p_util_get_time(philo->data), philo, RELEASE_FORK);
 	pthread_mutex_unlock(&philo->data->mutex_forks[philo->fork_right]);
 }
 

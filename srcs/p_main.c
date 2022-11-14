@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 10:38:04 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/13 22:40:33 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:26:05 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ static void	p_clear_all(t_data *data, t_philo *philos)
 	i = 0;
 	while (i < data->philos_total)
 		pthread_mutex_destroy(&data->mutex_forks[i++]);
-	// pthread_mutex_destroy(&data->mutex_routine_end);
+	pthread_mutex_destroy(&data->mutex_die);
 	pthread_mutex_destroy(&data->mutex_simulation_end);
-	// (void)philos;
 	free(philos);
 	free(data->mutex_forks);
 }

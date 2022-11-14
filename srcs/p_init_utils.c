@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 13:14:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/13 22:36:44 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:19:30 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ void	p_init_mutexes(t_data *data)
 {
 	p_init_mutex_forks(data);
 	// pthread_mutex_init(&data->mutex_routine_end, NULL);
+	pthread_mutex_init(&data->mutex_die, NULL);
 	pthread_mutex_init(&data->mutex_simulation_end, NULL);
 }
