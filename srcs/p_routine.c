@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 18:30:00 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 14:57:56 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 18:02:44 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,17 @@ static int	p_is_dead(t_philo *philo)
 	return (0);
 }
 
+static int	p_finished_all_meals(t_philo *philo)
+{
+	if (philo->meals_count >= philo->data->meals_minimum)
+	{
+		p_util_log(p_util_get_time(philo->data), philo, FINISH);
+		philo->data->philos_finished_count++;
+		return (VALID);
+	}
+	return (0);
+}
+
 /* 
 	we are going to assume the philosphers had their first
 	meal even before the routine start. Hence we update
@@ -45,8 +56,8 @@ void	*p_routine_loop(void *philosopher)
 		// pthread_mutex_lock(&philo->data->mutex_routine_end);
 		if (p_is_dead(philo))
 			break ;
-		// else if (p_had_minimum_meals(philo))
-			// break ;
+		else if (p_finished_all_meals(philo))
+			break ;
 		p_action_take_forks(philo);
 		p_action_eat(philo);
 		p_action_sleep(philo);

@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 10:38:04 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 11:26:05 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 17:32:56 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	p_data_parsing(t_data *data, char **av)
 	data->time_to_eat = p_util_a_to_unsigned_int(av[3]);
 	data->time_to_sleep = p_util_a_to_unsigned_int(av[4]);
 	data->time_routine_start = 0;
+	data->philos_finished_count = 0;
 }
 
 static void	p_clear_all(t_data *data, t_philo *philos)

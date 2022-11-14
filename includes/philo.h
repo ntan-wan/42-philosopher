@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 11:24:21 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 17:32:47 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,14 @@ typedef enum e_action
 	EATING,
 	SLEEP,
 	THINK,
-	DIED
+	DIED,
+	FINISH
 }	t_action;
 
 typedef struct	s_data
 {
 	size_t			philos_total;
+	size_t			philos_finished_count;
 	size_t			time_to_eat;
 	size_t			time_to_die;
 	size_t			time_to_sleep;

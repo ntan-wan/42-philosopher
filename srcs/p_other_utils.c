@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 11:38:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 11:22:28 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/14 17:58:09 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	p_util_log(size_t timestamp, t_philo *philo, int action)
 		printf("%ldms %ld is thinking\n", timestamp, philo->position_num);
 	else if (action == DIED)
 		printf("%ldms %ld died\n", timestamp, philo->position_num);
+	else if (action == FINISH)
+		printf("%ldms %ld is finished\n", timestamp, philo->position_num);
 }
 
 size_t	p_util_get_millisecond(void)
