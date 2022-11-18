@@ -5,66 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 11:38:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 17:58:09 by ntan-wan         ###   ########.fr       */
+/*   Created: 2022/11/17 14:38:43 by ntan-wan          #+#    #+#             */
+/*   Updated: 2022/11/18 15:04:20 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	p_util_log(size_t timestamp, t_philo *philo, int action)
+int p_util_error_print(char *msg)
 {
-	if (action == TAKING_FORK)
-		printf("%ldms %ld has taken a fork\n", timestamp, philo->position_num);
-	else if (action == RELEASE_FORK)
-		printf("%ldms %ld has release a fork\n", timestamp, philo->position_num);
-	else if (action == EATING)
-		printf("%ldms %ld is eating\n", timestamp, philo->position_num);
-	else if (action == SLEEP)
-		printf("%ldms %ld is sleeping\n", timestamp, philo->position_num);
-	else if (action == THINK)
-		printf("%ldms %ld is thinking\n", timestamp, philo->position_num);
-	else if (action == DIED)
-		printf("%ldms %ld died\n", timestamp, philo->position_num);
-	else if (action == FINISH)
-		printf("%ldms %ld is finished\n", timestamp, philo->position_num);
-}
-
-size_t	p_util_get_millisecond(void)
-{
-	static struct timeval	time_value;
-	
-	gettimeofday(&time_value, NULL);
-	return ((time_value.tv_sec * 1000) + (time_value.tv_usec / 1000));
-}
-
-size_t	p_util_get_time(t_data *data)
-{
-	return (p_util_get_millisecond() - data->time_routine_start);
-}
-
-int	p_util_error_print(char *msg)
-{
-	printf("%s\n", msg);
+	printf("err: %s\n", msg);
 	return (ERROR);
 }
 
-size_t  p_util_a_to_unsigned_int(char *str)
+int	p_util_atoi(char *str)
 {
-	size_t  num;
-	
-	if (!str)
-		return (ERROR);
+	unsigned long long int	num;
+
 	num = 0;
-	while (*str == '+')
-		str++;
-	while (*str)
-	{
-	   if (*str >= '0' && *str <= '9')
-			num = num * 10 + ( *str - '0');
-		else
-			return (ERROR);
-		str++;
-	}
-	return (num);
+	while (*str && *str >= '0' && *str <= '9')
+		num = (num * 10) + (*str++ - '0');
+	if (num > INT_MAX)
+		return (-1);
+	else
+		return ((int)num);
+}
+
+time_t	p_util_get_time_in_ms(void)
+{
+	struct timeval		tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void    p_util_delay(time_t start_time)
+{
+    while (p_util_get_time_in_ms() < start_time)
+        continue ;
 }

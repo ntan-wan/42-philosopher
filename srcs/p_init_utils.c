@@ -5,52 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/12 13:14:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/14 11:19:30 by ntan-wan         ###   ########.fr       */
+/*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
+/*   Updated: 2022/11/18 11:02:38 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	p_init_philos(t_data *data, t_philo **philos)
+static void	p_init_data_parsing(t_data *data, char **av)
 {
-	size_t	i;
+	if (av[5])
+		data->meals_minimum = p_util_atoi(av[5]);
+	else
+		data->meals_minimum = -1;
+	data->philos_total = p_util_atoi(av[1]);
+	data->time_to_die = p_util_atoi(av[2]);
+	data->time_to_eat = p_util_atoi(av[3]);
+	data->time_to_sleep = p_util_atoi(av[4]);
+}
 
-	i = 0;
-	*philos = (t_philo *)malloc(sizeof(t_philo) * data->philos_total);
-	if (!*philos)
-		return ;
-	while (i < data->philos_total)
+static void	p_assign_forks(t_philo *philo)
+{
+	if (philo->position_num % 2 != 0)
 	{
-		(*philos)[i].fork_left = i;
-		(*philos)[i].fork_right = (i + 1) % data->philos_total;
-		(*philos)[i].meals_count = 0;
-		(*philos)[i].time_last_meal = 0;
-		(*philos)[i].time_limit_to_eat = 0;
-		(*philos)[i].position_num = i + 1;
-		(*philos)[i].data = data;
-		(*philos)[i].pid = 0;
-		i++;
+		philo->fork[0] = (philo->position_num + 1) % philo->data->philos_total;
+		philo->fork[1] = philo->position_num;
+	}
+	else
+	{
+		philo->fork[0] = philo->position_num;
+		philo->fork[1] = (philo->position_num + 1) % philo->data->philos_total;
 	}
 }
 
-static void	p_init_mutex_forks(t_data *data)
+static int	p_init_philos(t_data *data)
 {
-	size_t	i;
+	unsigned int	i;
+	t_philo			**philos;
 
-	data->mutex_forks = malloc(sizeof(pthread_mutex_t) * data->philos_total);
 	i = 0;
+	philos = (t_philo **)malloc(sizeof(t_philo *) * data->philos_total);
+	data->philos = philos;
+	if (!philos)
+		return (p_util_error_print(ERR_MALLOC));
 	while (i < data->philos_total)
 	{
-		pthread_mutex_init(&data->mutex_forks[i], NULL);
+		philos[i] = malloc(sizeof(t_philo) * 1);
+		if (!philos[i])
+			return (p_util_error_print(ERR_MALLOC));
+		else if (pthread_mutex_init(&philos[i]->lock_meal_time, NULL) != 0)
+			return (p_util_error_print(ERR_MUTEX));
+		philos[i]->data = data;
+		philos[i]->position_num = i;
+		philos[i]->meals_count = 0;
+		p_assign_forks(philos[i]);
 		i++;
 	}
+	return (SUCCESS);
 }
 
-void	p_init_mutexes(t_data *data)
+static int	p_init_global_mutexes(t_data *data)
 {
-	p_init_mutex_forks(data);
-	// pthread_mutex_init(&data->mutex_routine_end, NULL);
-	pthread_mutex_init(&data->mutex_die, NULL);
-	pthread_mutex_init(&data->mutex_simulation_end, NULL);
+	unsigned int	i;
+
+	i = 0;
+	data->locks_forks = malloc(sizeof(pthread_mutex_t) * data->philos_total);
+	if (!data->locks_forks)
+		return (p_util_error_print(ERR_MALLOC));
+	else if (pthread_mutex_init(&data->lock_sim_stop, NULL) != 0)
+		return (p_util_error_print(ERR_MUTEX));
+	else if (pthread_mutex_init(&data->lock_log, NULL) != 0)
+		return (p_util_error_print(ERR_MUTEX));
+	while (i < data->philos_total)
+		if (pthread_mutex_init(&(data->locks_forks[i++]), NULL) != 0)
+			return (p_util_error_print(ERR_MUTEX));
+	return (SUCCESS);
+}
+
+t_data	*p_init_data(char **av)
+{
+	t_data	*data;
+
+	data = malloc(sizeof(t_data) * 1);
+	if (!data)
+		return (NULL);
+	p_init_data_parsing(data, av);
+	p_init_philos(data);
+	p_init_global_mutexes(data);
+	return (SUCCESS);
 }
