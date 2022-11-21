@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 17:31:48 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 19:57:39 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	*p_routine_philo_one(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->locks_forks[philo->fork[0]]);
-	p_log_status(philo, GET_FORK_1);
 	p_util_usleep(philo->data, philo->data->time_to_die);
 	p_log_status(philo, DIED);
 	pthread_mutex_unlock(&philo->data->locks_forks[philo->fork[0]]);

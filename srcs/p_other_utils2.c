@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 07:02:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 18:27:40 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:46:51 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@ void	p_util_destroy_mutexes(t_data *data, t_philo **philos)
 
 void	p_util_free_data(t_data **all_data)
 {
-	int		i;
 	t_data	*data;
 
 	data = *all_data;
-	i = -1;
 	if (!data)
 		return ;
 	if (data->locks_forks)

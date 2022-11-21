@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 18:31:22 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:54:26 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static void	p_sim_end(t_data **data, pthread_t thread_monitor, t_philo **philos)
 	if ((*data)->philos_total > 1)
 		pthread_join(thread_monitor, NULL);
 	p_util_destroy_mutexes(*data, philos);
-	p_util_free_data(data);
 	p_util_free_philos(philos);
+	p_util_free_data(data);
 }
 
 int	main(int ac, char **av)

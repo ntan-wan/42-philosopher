@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 17:08:31 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:32:36 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,38 @@ static void	p_init_data_parsing(t_data *data, char **av)
 	data->time_to_eat = p_util_atoi(av[3]);
 	data->time_to_sleep = p_util_atoi(av[4]);
 	data->sim_stop = false;
+}
+
+/* 
+	Philo with odd id will have their forks reversed.
+	Without reverse:
+	philo 0 -> fork 0 and fork 1
+	philo 1 -> fork 1 and fork 2
+	philo 2 -> fork 2 and fork 0
+	If philo 0 takes fork 0, philo 1 takes fork 1, and philo 2 takes fork 2,
+	there will be deadlock as everyone's second fork is still being used
+	by other philos.
+	with reverse :
+	philo 0 -> fork 1 and fork 0
+	philo 1 -> fork 1 and fork 2 
+	philo 2 -> fork 0 and fork 2
+	If philo 2 takes fork 0, philo 0 takes fork 1 and philo 1 waits patiently
+	for fork 1, philo 2 is able to get fork 2 as no one has acquired yet.When
+	philo 2 is done eating, philo 0 can acquires fork 0 and start eating.
+	When philo 0 is done eating, philo 1 can then start eating.
+ */
+static void	p_assign_forks(t_philo *philo)
+{
+	if (philo->id % 2 != 0)
+	{
+		philo->fork[0] = (philo->id + 1) % philo->data->philos_total;
+		philo->fork[1] = philo->id;
+	}
+	else
+	{
+		philo->fork[0] = philo->id;
+		philo->fork[1] = (philo->id + 1) % philo->data->philos_total;
+	}
 }
 
 t_philo	**p_init_philos(t_data *data)
@@ -47,8 +79,7 @@ t_philo	**p_init_philos(t_data *data)
 		philos[i]->data = data;
 		philos[i]->meals_count = 0;
 		philos[i]->time_last_meal = 0;
-		philos[i]->fork[0] = (philos[i]->id + 1) % data->philos_total;
-		philos[i]->fork[1] = philos[i]->id;
+		p_assign_forks(philos[i]);
 	}
 	return (philos);
 }
