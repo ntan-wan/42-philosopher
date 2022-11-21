@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 15:48:20 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:26:12 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ void	p_philo_release_forks(t_philo *philo);
 void	*p_routine_philo(void *philosopher);
 
 /* monitor_utils */
-int		p_monitor_start(pthread_t *thread_monitor, t_philo **philos);
-
-/* monitor_utils2 */
+void	*p_monitor_philo(void *philosophers);
 bool	p_monitor_sim_has_stopped(t_data *data);
 
 /* log_utils */
@@ -103,6 +101,7 @@ void	p_util_delay(time_t start_time);
 void	p_util_usleep(t_data *data, time_t time_sleep);
 
 /* other_utils2 */
+void	p_util_free_data(t_data **all_data);
+void	p_util_free_philos(t_philo **philos);
 void	p_util_destroy_mutexes(t_data *data, t_philo **philos);
-void	p_util_free_data_and_philos(t_data **all_data, t_philo **philos);
 #endif

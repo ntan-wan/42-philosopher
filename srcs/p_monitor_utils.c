@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:52:32 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 15:07:53 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:19:20 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ static bool	p_philo_died(t_philo *philo)
 
 static bool	p_monitor_has_ended(t_philo **philos)
 {
-	unsigned int	i;
-	bool			all_ate_enough;
-	t_data			*data;
+	int		i;
+	t_data	*data;
+	bool	all_ate_enough;
 
-	i = 0;
+	i = -1;
 	all_ate_enough = true;
 	data = philos[0]->data;
-	while (i < data->philos_total)
+	while (++i < (int)data->philos_total)
 	{
 		pthread_mutex_lock(&philos[i]->lock_meal_time);
 		if (p_philo_died(philos[i]))
@@ -55,7 +55,6 @@ static bool	p_monitor_has_ended(t_philo **philos)
 			&& philos[i]->meals_count < data->meals_minimum)
 			all_ate_enough = false;
 		pthread_mutex_unlock(&philos[i]->lock_meal_time);
-		i++;
 	}
 	if (data->meals_minimum && all_ate_enough)
 	{
@@ -65,14 +64,13 @@ static bool	p_monitor_has_ended(t_philo **philos)
 	return (false);
 }
 
-static void	*p_monitor_philo(void *philosophers)
+void	*p_monitor_philo(void *philosophers)
 {
 	t_data	*data;
 	t_philo	**philos;
 
 	philos = (t_philo **)philosophers;
 	data = philos[0]->data;
-	p_monitor_set_sim_stop(data, false);
 	p_util_delay(data->time_start);
 	while (1)
 	{
@@ -83,13 +81,12 @@ static void	*p_monitor_philo(void *philosophers)
 	return (NULL);
 }
 
-int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
+bool	p_monitor_sim_has_stopped(t_data *data)
 {
-	if (philos[0]->data->philos_total > 1)
-	{
-		if (pthread_create(thread_monitor, NULL,
-				p_monitor_philo, philos) != 0)
-			return (p_util_error_print(ERR_THREAD));
-	}
-	return (SUCCESS);
+	bool	result;
+
+	pthread_mutex_lock(&data->lock_sim_stop);
+	result = data->sim_stop;
+	pthread_mutex_unlock(&data->lock_sim_stop);
+	return (result);
 }

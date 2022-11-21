@@ -6,25 +6,26 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:57:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/18 10:19:37 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 16:08:00 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 #define VALID 0
+#define INVALID 1
 
 static int	is_not_num(char *str)
 {
 	if (*str == '-' || *str == '+')
 	{
 		if (*(str + 1) < '0' || *(str + 1) > '9')
-			return (ERROR);
+			return (INVALID);
 		str++;
 	}
 	while (*str)
 	{
 		if (*str < '0' || *str > '9')
-			return (ERROR);
+			return (INVALID);
 		str++;
 	}
 	return (VALID);
