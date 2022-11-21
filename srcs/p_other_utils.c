@@ -6,11 +6,12 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:38:43 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/18 15:04:20 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/20 09:29:06 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+#define ZERO_POINT_ONE_MS 100
 
 int p_util_error_print(char *msg)
 {
@@ -43,4 +44,17 @@ void    p_util_delay(time_t start_time)
 {
     while (p_util_get_time_in_ms() < start_time)
         continue ;
+}
+
+void    p_util_usleep(t_data *data, time_t time_to_sleep)
+{
+	time_t	time_wake_up;
+
+	time_wake_up = p_util_get_time_in_ms() + time_to_sleep;
+	while (p_util_get_time_in_ms() < time_wake_up)
+	{
+		if (p_monitor_sim_has_stopped(data))
+			break ;
+		usleep(ZERO_POINT_ONE_MS);
+	}
 }

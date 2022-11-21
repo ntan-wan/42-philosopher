@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/18 11:02:38 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 11:36:21 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	p_init_data_parsing(t_data *data, char **av)
 	if (av[5])
 		data->meals_minimum = p_util_atoi(av[5]);
 	else
-		data->meals_minimum = -1;
+		data->meals_minimum = 0;
 	data->philos_total = p_util_atoi(av[1]);
 	data->time_to_die = p_util_atoi(av[2]);
 	data->time_to_eat = p_util_atoi(av[3]);
@@ -26,15 +26,15 @@ static void	p_init_data_parsing(t_data *data, char **av)
 
 static void	p_assign_forks(t_philo *philo)
 {
-	if (philo->position_num % 2 != 0)
+	if (philo->id % 2 != 0)
 	{
-		philo->fork[0] = (philo->position_num + 1) % philo->data->philos_total;
-		philo->fork[1] = philo->position_num;
+		philo->fork[0] = (philo->id + 1) % philo->data->philos_total;
+		philo->fork[1] = philo->id;
 	}
 	else
 	{
-		philo->fork[0] = philo->position_num;
-		philo->fork[1] = (philo->position_num + 1) % philo->data->philos_total;
+		philo->fork[0] = philo->id;
+		philo->fork[1] = (philo->id + 1) % philo->data->philos_total;
 	}
 }
 
@@ -55,12 +55,14 @@ static int	p_init_philos(t_data *data)
 			return (p_util_error_print(ERR_MALLOC));
 		else if (pthread_mutex_init(&philos[i]->lock_meal_time, NULL) != 0)
 			return (p_util_error_print(ERR_MUTEX));
+		philos[i]->id = i;
+		philos[i]->thread = 0;
 		philos[i]->data = data;
-		philos[i]->position_num = i;
 		philos[i]->meals_count = 0;
 		p_assign_forks(philos[i]);
 		i++;
 	}
+	data->sim_stop = false;
 	return (SUCCESS);
 }
 
@@ -92,5 +94,5 @@ t_data	*p_init_data(char **av)
 	p_init_data_parsing(data, av);
 	p_init_philos(data);
 	p_init_global_mutexes(data);
-	return (SUCCESS);
+	return (data);
 }
