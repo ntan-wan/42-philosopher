@@ -6,11 +6,22 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 18:26:39 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:31:22 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
+{
+	if (philos[0]->data->philos_total > 1)
+	{
+		if (pthread_create(thread_monitor, NULL,
+				p_monitor_philo, philos) != 0)
+			return (p_util_error_print(ERR_THREAD));
+	}
+	return (SUCCESS);
+}
 
 static int	p_sim_start(t_data *data, t_philo **philos)
 {
@@ -45,17 +56,6 @@ static void	p_sim_end(t_data **data, pthread_t thread_monitor, t_philo **philos)
 	p_util_destroy_mutexes(*data, philos);
 	p_util_free_data(data);
 	p_util_free_philos(philos);
-}
-
-static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
-{
-	if (philos[0]->data->philos_total > 1)
-	{
-		if (pthread_create(thread_monitor, NULL,
-				p_monitor_philo, philos) != 0)
-			return (p_util_error_print(ERR_THREAD));
-	}
-	return (SUCCESS);
 }
 
 int	main(int ac, char **av)
