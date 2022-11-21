@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:52:32 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 09:28:59 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:07:53 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,24 @@ static bool	p_philo_died(t_philo *philo)
 	return (false);
 }
 
-static bool	p_monitor_has_ended(t_data *data)
+static bool	p_monitor_has_ended(t_philo **philos)
 {
 	unsigned int	i;
 	bool			all_ate_enough;
+	t_data			*data;
 
 	i = 0;
 	all_ate_enough = true;
+	data = philos[0]->data;
 	while (i < data->philos_total)
 	{
-		pthread_mutex_lock(&data->philos[i]->lock_meal_time);
-		if (p_philo_died(data->philos[i]))
+		pthread_mutex_lock(&philos[i]->lock_meal_time);
+		if (p_philo_died(philos[i]))
 			return (true);
 		if (data->meals_minimum
-			&& data->philos[i]->meals_count < data->meals_minimum)
+			&& philos[i]->meals_count < data->meals_minimum)
 			all_ate_enough = false;
-		pthread_mutex_unlock(&data->philos[i]->lock_meal_time);
+		pthread_mutex_unlock(&philos[i]->lock_meal_time);
 		i++;
 	}
 	if (data->meals_minimum && all_ate_enough)
@@ -63,28 +65,30 @@ static bool	p_monitor_has_ended(t_data *data)
 	return (false);
 }
 
-static void	*p_monitor_philo(void *info)
+static void	*p_monitor_philo(void *philosophers)
 {
 	t_data	*data;
+	t_philo	**philos;
 
-	data = (t_data *)info;
+	philos = (t_philo **)philosophers;
+	data = philos[0]->data;
 	p_monitor_set_sim_stop(data, false);
 	p_util_delay(data->time_start);
 	while (1)
 	{
-		if (p_monitor_has_ended(data))
+		if (p_monitor_has_ended(philos))
 			break ;
 		usleep(ONE_MS);
 	}
 	return (NULL);
 }
 
-int	p_monitor_start(t_data *data)
+int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
 {
-	if (data->philos_total > 1)
+	if (philos[0]->data->philos_total > 1)
 	{
-		if (pthread_create(&data->monitor_philo, NULL,
-				p_monitor_philo, data) != 0)
+		if (pthread_create(thread_monitor, NULL,
+				p_monitor_philo, philos) != 0)
 			return (p_util_error_print(ERR_THREAD));
 	}
 	return (SUCCESS);

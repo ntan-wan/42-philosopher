@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 11:36:21 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:38:35 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	p_init_data_parsing(t_data *data, char **av)
 	data->time_to_die = p_util_atoi(av[2]);
 	data->time_to_eat = p_util_atoi(av[3]);
 	data->time_to_sleep = p_util_atoi(av[4]);
+	data->sim_stop = false;
 }
 
 static void	p_assign_forks(t_philo *philo)
@@ -38,32 +39,31 @@ static void	p_assign_forks(t_philo *philo)
 	}
 }
 
-static int	p_init_philos(t_data *data)
+t_philo **p_init_philos(t_data *data)
 {
 	unsigned int	i;
 	t_philo			**philos;
 
 	i = 0;
 	philos = (t_philo **)malloc(sizeof(t_philo *) * data->philos_total);
-	data->philos = philos;
 	if (!philos)
-		return (p_util_error_print(ERR_MALLOC));
+		return (NULL);
 	while (i < data->philos_total)
 	{
 		philos[i] = malloc(sizeof(t_philo) * 1);
 		if (!philos[i])
-			return (p_util_error_print(ERR_MALLOC));
+			return (NULL);
 		else if (pthread_mutex_init(&philos[i]->lock_meal_time, NULL) != 0)
-			return (p_util_error_print(ERR_MUTEX));
+			return(NULL);
 		philos[i]->id = i;
 		philos[i]->thread = 0;
 		philos[i]->data = data;
 		philos[i]->meals_count = 0;
+		philos[i]->time_last_meal = 0;
 		p_assign_forks(philos[i]);
 		i++;
 	}
-	data->sim_stop = false;
-	return (SUCCESS);
+	return (philos);
 }
 
 static int	p_init_global_mutexes(t_data *data)
@@ -92,7 +92,6 @@ t_data	*p_init_data(char **av)
 	if (!data)
 		return (NULL);
 	p_init_data_parsing(data, av);
-	p_init_philos(data);
 	p_init_global_mutexes(data);
 	return (data);
 }

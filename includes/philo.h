@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 10:38:57 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:21:44 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ typedef struct s_data
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
 	unsigned int	philos_total;
-	pthread_t		monitor_philo;
+	// 
+	// pthread_t		monitor_philo;
 	pthread_mutex_t	lock_log;
 	pthread_mutex_t	lock_sim_stop;
 	pthread_mutex_t	*locks_forks;
-	struct s_philo	**philos;
+	//
+	// struct s_philo	**philos;
 }	t_data;
 
 typedef struct s_philo
@@ -76,6 +78,7 @@ int		is_invalid_input(int ac, char **av);
 
 /* init_utils */
 t_data	*p_init_data(char **av);
+t_philo **p_init_philos(t_data *data);
 
 /* philo_utils */
 void	p_philo_eats(t_philo *philo);
@@ -88,7 +91,7 @@ void	p_philo_release_forks(t_philo *philo);
 void    *p_routine_philo(void *philosopher);
 
 /* monitor_utils */
-int	p_monitor_start(t_data *data);
+int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos);
 
 /* monitor_utils2 */
 bool	p_monitor_sim_has_stopped(t_data *data);
@@ -104,6 +107,6 @@ void    p_util_delay(time_t start_time);
 void    p_util_usleep(t_data *data, time_t time_sleep);
 
 /* other_utils2 */
-void	p_util_free_data(t_data **all_data);
-void	p_util_destroy_mutexes(t_data *data);
+void	p_util_destroy_mutexes(t_data *data, t_philo **philos);
+void	p_util_free_data_and_philos(t_data **all_data, t_philo **philos);
 #endif
