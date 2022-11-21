@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 18:26:12 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:57:38 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int		p_util_atoi(char *str);
 time_t	p_util_get_time_in_ms(void);
 int		p_util_error_print(char *msg);
 void	p_util_delay(time_t start_time);
-void	p_util_usleep(t_data *data, time_t time_sleep);
+void	p_util_usleep_and_check(t_data *data, time_t time_sleep);
 
 /* other_utils2 */
 void	p_util_free_data(t_data **all_data);

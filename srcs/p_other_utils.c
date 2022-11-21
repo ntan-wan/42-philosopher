@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:38:43 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 18:22:38 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/21 20:57:38 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	p_util_delay(time_t start_time)
 		continue ;
 }
 
-void	p_util_usleep(t_data *data, time_t time_to_sleep)
+void	p_util_usleep_and_check(t_data *data, time_t time_to_sleep)
 {
 	time_t	time_wake_up;
 
