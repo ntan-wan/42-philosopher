@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 20:54:26 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:35:04 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,35 @@ static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
 
 static int	p_sim_start(t_data *data, t_philo **philos)
 {
-	unsigned int	i;
-	unsigned int	time_adjustment;
+	int	i;
+	// unsigned int	time_adjustment;
 
-	i = 0;
-	time_adjustment = data->philos_total * 2 * 10;
-	data->time_start = p_util_get_time_in_ms() + time_adjustment;
-	while (i < data->philos_total)
+	i = -1;
+	// time_adjustment = data->philos_total * 2 * 10;
+	// data->time_start = p_util_get_time_in_ms() + time_adjustment;
+	data->time_start = p_util_get_time_in_ms();
+	while (++i < (int)data->philos_total)
 	{
 		if (pthread_create(&philos[i]->thread, NULL,
 				p_routine_philo, philos[i]) != 0)
 			return (p_util_error_print(ERR_THREAD));
-		i++;
+		//
+		// usleep(100);
 	}
 	return (SUCCESS);
 }
 
 static void	p_sim_end(t_data **data, pthread_t thread_monitor, t_philo **philos)
 {
-	unsigned int	i;
+	int	i;
 
-	i = 0;
-	while (i < (*data)->philos_total)
-	{
+	i = -1;
+	while (++i < (int)(*data)->philos_total)
 		pthread_join(philos[i]->thread, NULL);
-		i++;
-	}
 	if ((*data)->philos_total > 1)
 		pthread_join(thread_monitor, NULL);
+	if ((*data)->meals_minimum)
+		p_log_meals_report(philos);
 	p_util_destroy_mutexes(*data, philos);
 	p_util_free_philos(philos);
 	p_util_free_data(data);

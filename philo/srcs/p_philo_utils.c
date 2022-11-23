@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:23:55 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 20:57:38 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/23 17:50:55 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	p_philo_eats(t_philo *philo)
 	pthread_mutex_lock(&philo->lock_meal_time);
 	philo->time_last_meal = p_util_get_time_in_ms();
 	pthread_mutex_unlock(&philo->lock_meal_time);
-	p_util_usleep_and_check(philo->data, philo->data->time_to_eat);
+	usleep(philo->data->time_to_eat * 1000);
+	// p_util_usleep_and_check(philo->data, philo->data->time_to_eat);
 	pthread_mutex_lock(&philo->lock_meal_time);
 	philo->meals_count++;
 	pthread_mutex_unlock(&philo->lock_meal_time);
@@ -41,7 +42,8 @@ void	p_philo_eats(t_philo *philo)
 void	p_philo_sleeps(t_philo *philo)
 {
 	p_log_status(philo, SLEEPING);
-	p_util_usleep_and_check(philo->data, philo->data->time_to_sleep);
+	usleep(philo->data->time_to_sleep * 1000);
+	// p_util_usleep_and_check(philo->data, philo->data->time_to_sleep);
 }
 
 void	p_philo_thinks(t_philo *philo)

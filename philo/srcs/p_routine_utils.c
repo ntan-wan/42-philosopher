@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/21 22:39:14 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:17:22 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	*p_routine_philo_one(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->locks_forks[philo->fork[0]]);
-	p_util_usleep_and_check(philo->data, philo->data->time_to_die);
+	usleep(philo->data->time_to_die * 1000);
 	p_log_status(philo, DIED);
 	pthread_mutex_unlock(&philo->data->locks_forks[philo->fork[0]]);
 	return (NULL);
@@ -29,8 +29,9 @@ static void	p_routine_philo_loop(t_philo *philo)
 {
 	if (philo->id % 2 != 0)
 	{
-		p_log_status(philo, THINKING);
+		// p_log_status(philo, THINKING);
 		usleep(philo->data->time_to_eat * 1000);
+		// usleep(1000);
 	}
 	while (!p_monitor_sim_has_stopped(philo->data))
 	{
@@ -50,7 +51,7 @@ void	*p_routine_philo(void *philosopher)
 	pthread_mutex_lock(&philo->lock_meal_time);
 	philo->time_last_meal = philo->data->time_start;
 	pthread_mutex_unlock(&philo->lock_meal_time);
-	p_util_delay(philo->data->time_start);
+	// p_util_delay(philo->data->time_start);
 	if (philo->data->philos_total == 1)
 		return (p_routine_philo_one(philo));
 	else
