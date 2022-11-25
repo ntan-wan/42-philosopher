@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 10:38:42 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/23 19:30:24 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/25 18:57:51 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	p_log_death_report(time_t time_current, t_philo *philo)
 	time_t	time_passed;
 
 	time_passed = time_current - philo->time_last_meal;
-	printf("\n%sDeath report%s\n", BOLD_AND_RED_BG, COLOR_OFF);
+	printf("\n%sDEATH REPORT%s\n", BOLD_AND_RED_BG, COLOR_OFF);
 	printf("%sPhilo %d\n", BOLD, philo->id + 1);
 	printf("Time_to_die = %ld\n", philo->data->time_to_die);
 	printf("Time_current = %ld\n", time_current);
@@ -66,9 +66,11 @@ void	p_log_meals_report(t_philo **philos)
 {
 	int		i;
 	t_data	*data;
-	
+
 	i = -1;
 	data = philos[0]->data;
+	printf("\n%sMEALS REPORT%s\n", BOLD_AND_GREEN_BG, COLOR_OFF);
 	while (++i < (int)data->philos_total)
-		printf("philo %d has ate %d meals\n", philos[i]->id + 1, philos[i]->meals_count);
+		printf("%sphilo %d has ate %d meals\n",
+			BOLD, philos[i]->id + 1, philos[i]->meals_count);
 }

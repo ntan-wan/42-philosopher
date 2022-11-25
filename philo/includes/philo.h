@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/23 19:30:05 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/25 19:24:33 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 # define BOLD "\e[1m"
 # define UNDERLINE "\x1b[4m"
 # define BOLD_AND_RED_BG "\33[1;101m"
+# define BOLD_AND_GREEN_BG "\33[1;30;42m"
 # define RED	"\e[31m"
 # define GREEN	"\e[32m"
 # define PURPLE	"\e[35m"
 # define YELLOW	"\e[33m"
 # define COLOR_OFF	"\e[0m"
-
 
 # define ERR_MALLOC	"Could not allocate memory"
 # define ERR_MUTEX	"Could not create mutex"
@@ -94,6 +94,9 @@ void	*p_routine_philo(void *philosopher);
 void	*p_monitor_philo(void *philosophers);
 bool	p_monitor_sim_has_stopped(t_data *data);
 
+/* monitor_utils2 */
+void	p_monitor_delay(t_philo **philos);
+
 /* log_utils */
 void	p_log_meals_report(t_philo **philos);
 void	p_log_status(t_philo *philo, t_status status);
@@ -103,8 +106,7 @@ void	p_log_death_report(time_t time_current, t_philo *philo);
 int		p_util_atoi(char *str);
 time_t	p_util_get_time_in_ms(void);
 int		p_util_error_print(char *msg);
-void	p_util_delay(time_t start_time);
-void	p_util_usleep_and_check(t_data *data, time_t time_sleep);
+void	p_util_usleep_sim_check(t_data *data, time_t time_sleep);
 
 /* other_utils2 */
 void	p_util_free_data(t_data **all_data);
