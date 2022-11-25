@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/25 19:17:55 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/25 21:21:02 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
 
 static int	p_sim_start(t_data *data, t_philo **philos)
 {
-	int				i;
+	int		i;
+	time_t	time_adjustment;
 
 	i = -1;
-	data->time_start = p_util_get_time_in_ms();
+	time_adjustment = data->philos_total * 2 * 10;
+	data->time_start = p_util_get_time_in_ms() + time_adjustment;
 	while (++i < (int)data->philos_total)
 	{
 		if (pthread_create(&philos[i]->thread, NULL,

@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:52:32 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/25 19:27:07 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/25 21:28:03 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	*p_monitor_philo(void *philosophers)
 	t_philo	**philos;
 
 	philos = (t_philo **)philosophers;
-	p_monitor_delay(philos);
+	p_util_delay(philos[0]->data->time_start);
 	while (1)
 	{
 		if (p_monitor_has_ended(philos))

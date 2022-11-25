@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/25 19:18:14 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/25 21:26:11 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	*p_routine_philo(void *philosopher)
 	pthread_mutex_lock(&philo->lock_meal_time);
 	philo->time_last_meal = philo->data->time_start;
 	pthread_mutex_unlock(&philo->lock_meal_time);
+	p_util_delay(philo->data->time_start);
 	if (philo->data->philos_total == 1)
 		return (p_routine_philo_one(philo));
 	else

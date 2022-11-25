@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:38:43 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/25 19:17:01 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/11/25 21:22:25 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ time_t	p_util_get_time_in_ms(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	p_util_delay(time_t time_start)
+{
+	while (p_util_get_time_in_ms() < time_start)
+		continue ;
 }
 
 void	p_util_usleep_sim_check(t_data *data, time_t time_to_sleep)
