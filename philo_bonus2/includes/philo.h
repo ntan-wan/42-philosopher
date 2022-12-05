@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/04 23:17:37 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 17:55:55 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_data
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
 	unsigned int	philos_total;
-	unsigned int	meals_minimum;
+	unsigned int	meals_min;
 	sem_t			*sem_log;
 	sem_t			*sem_forks;
 	sem_t			*sem_sim_stop;
@@ -131,4 +131,5 @@ int		p_util_digit_count(unsigned int num);
 char    *p_util_utoa(unsigned int num);
 void 	p_kill_all_philos(t_data *data);
 void	p_monitor_set_sim_stop(t_data *data, bool state);
+void *p_util_calloc(size_t count, size_t size);
 #endif

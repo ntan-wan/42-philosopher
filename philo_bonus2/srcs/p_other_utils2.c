@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 07:02:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/04 15:13:27 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 18:01:05 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	p_util_strcat(char *dst, char *src)
 {
 	if (!dst || !src)
 		return ;
-	while (*dst)
+	while (*dst != '\0')
 		dst++;
 	while (*src)
 		*dst++ = *src++;
@@ -99,4 +99,16 @@ char    *p_util_utoa(unsigned int num)
 		num /= 10;
 	}
 	return (str_num);
+}
+
+void *p_util_calloc(size_t count, size_t size)
+{
+	size_t			i;
+	unsigned char	*mem;
+
+	i = 0;
+	mem = (unsigned char*)malloc(count * size);
+	while (i < count)
+		mem[i++] = '\0';
+	return (mem);
 }

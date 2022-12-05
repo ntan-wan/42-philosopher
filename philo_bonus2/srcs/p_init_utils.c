@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/04 23:11:08 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 18:03:12 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	p_init_data_parsing(t_data *data, char **av)
 {
 	if (av[5])
-		data->meals_minimum = p_util_atoi(av[5]);
+		data->meals_min = p_util_atoi(av[5]);
 	else
-		data->meals_minimum = 0;
+		data->meals_min = 0;
 	data->philos_total = p_util_atoi(av[1]);
 	data->time_to_die = p_util_atoi(av[2]);
 	data->time_to_eat = p_util_atoi(av[3]);
@@ -36,8 +36,7 @@ static void	p_set_sim_meal(t_philo *philo)
 	int		total_str_len;
 	
 	total_str_len = p_util_strlen(SEM_NAME_MEAL) + p_util_digit_count(philo->id + 1);
-	sem_name = malloc(sizeof(char) * total_str_len + 1);
-	sem_name[total_str_len] = '\0';
+	sem_name = p_util_calloc(total_str_len + 1, sizeof(char));
 	temp_num = p_util_utoa(philo->id + 1);
 	p_util_strcat(sem_name, SEM_NAME_MEAL);
 	p_util_strcat(sem_name, temp_num);

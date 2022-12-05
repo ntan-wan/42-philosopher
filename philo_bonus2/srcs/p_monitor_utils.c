@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:52:32 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 15:45:07 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:58:36 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ static bool	p_monitor_has_ended(t_philo **philos)
 		sem_wait(philos[i]->sem_meal);
 		if (p_philo_died(philos[i]))
 			return (true);
-		if (data->meals_minimum
-			&& philos[i]->meals_count < data->meals_minimum)
+		if (data->meals_min
+			&& philos[i]->meals_count < data->meals_min)
 			all_ate_enough = false;
 		sem_post(philos[i]->sem_meal);
 	}
-	if (data->meals_minimum && all_ate_enough)
+	if (data->meals_min && all_ate_enough)
 	{
 		p_monitor_set_sim_stop(data, true);
 		return (true);

@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 14:47:02 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 16:42:43 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	p_sim_end(t_data **data, pthread_t thread_monitor, t_philo **philos)
 {
 	while (waitpid(-1, NULL, 0) != -1)
 		;
-	if ((*data)->meals_minimum)
+	if ((*data)->meals_min)
 		p_log_meals_report(philos);
 	p_util_close_global_semaphores(*data);
 	p_util_free_philos(philos);

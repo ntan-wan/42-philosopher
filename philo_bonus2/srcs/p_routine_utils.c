@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 15:54:18 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 16:24:46 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ void	*p_death_check(void *philosopher)
 			// p_kill_all_philos(philo->data);
 			sem_post(philo->sem_meal);
 			break ;
-		}
-		else if (philo->data->meals_minimum && philo->meals_count >= philo->data->meals_minimum)
-		{
-			
 		}
 	}
 	return (NULL);
