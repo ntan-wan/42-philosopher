@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 18:03:12 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/05 18:14:09 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,18 @@ static void	p_init_data_parsing(t_data *data, char **av)
  */
 static void	p_set_sim_meal(t_philo *philo)
 {
-	char	*temp_num;
-	char	*sem_name;
-	int		total_str_len;
+	// char	*temp_num;
+	// char	*sem_name;
+	// int		total_str_len;
 	
-	total_str_len = p_util_strlen(SEM_NAME_MEAL) + p_util_digit_count(philo->id + 1);
-	sem_name = p_util_calloc(total_str_len + 1, sizeof(char));
-	temp_num = p_util_utoa(philo->id + 1);
-	p_util_strcat(sem_name, SEM_NAME_MEAL);
-	p_util_strcat(sem_name, temp_num);
-	philo->sem_meal = sem_open(sem_name, O_CREAT, 0644, 1);
-	free(sem_name);
-	free(temp_num);
+	// total_str_len = p_util_strlen(SEM_NAME_MEAL) + p_util_digit_count(philo->id + 1);
+	// sem_name = p_util_calloc(total_str_len + 1, sizeof(char));
+	// temp_num = p_util_utoa(philo->id + 1);
+	// p_util_strcat(sem_name, SEM_NAME_MEAL);
+	// p_util_strcat(sem_name, temp_num);
+	// philo->sem_meal = sem_open(sem_name, O_CREAT, 0644, 1);
+	// free(sem_name);
+	// free(temp_num);
 }
 
 t_philo	**p_init_philos(t_data *data)
@@ -64,7 +64,8 @@ t_philo	**p_init_philos(t_data *data)
 		philos[i]->meals_count = 0;
 		philos[i]->time_last_meal = 0;
 		philos[i]->death_check = 0;
-		p_set_sim_meal(philos[i]);
+		philos[i]->sem_meal = sem_open(SEM_NAME_MEAL, O_CREAT, 0644, 1);
+		// p_set_sim_meal(philos[i]);
 	}
 	return (philos);
 }

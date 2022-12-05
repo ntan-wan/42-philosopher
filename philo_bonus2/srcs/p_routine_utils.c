@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 16:24:46 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 00:47:22 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ static void	*p_routine_philo_one(t_philo *philo)
 
 void p_kill_all_philos(t_data *data)
 {
-	int	i;
+	// int	i;
 
-	i = -1;
-	while (++i < (int)data->philos_total)
-		kill(data->pids[i], SIGKILL);
+	// i = -1;
+	// while (++i < (int)data->philos_total)
+		// kill(data->pids[i], SIGKILL);
+	kill(0, SIGINT);
 }
 
 void	*p_death_check(void *philosopher)
@@ -45,10 +46,11 @@ void	*p_death_check(void *philosopher)
 		if (time_passed > philo->data->time_to_die)
 		{
 			p_log_status(philo, DIED);
+			// sem_wait(philo->data->sem_log);
 			// p_log_death_report(time_current, philo);
 			p_monitor_set_sim_stop(philo->data, true);
-			// p_kill_all_philos(philo->data);
 			sem_post(philo->sem_meal);
+			// kill(0, SIGINT);
 			break ;
 		}
 	}

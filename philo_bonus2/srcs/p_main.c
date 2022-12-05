@@ -6,13 +6,13 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 16:42:43 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 00:50:44 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
+/*static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
 {
 	if (philos[0]->data->philos_total > 1)
 	{
@@ -21,7 +21,7 @@ static int	p_monitor_start(pthread_t *thread_monitor, t_philo **philos)
 			return (p_util_error_print(ERR_THREAD));
 	}
 	return (SUCCESS);
-}
+}*/
 
 static int	p_sim_start(t_data *data, t_philo **philos)
 {
@@ -45,13 +45,16 @@ static int	p_sim_start(t_data *data, t_philo **philos)
 
 static void	p_sim_end(t_data **data, pthread_t thread_monitor, t_philo **philos)
 {
-	while (waitpid(-1, NULL, 0) != -1)
-		;
+	// while (waitpid(-1, NULL, 0) != -1)
+		// ;
+	// p_kill_all_philos(*data);
+	waitpid(-1, NULL, 0);
 	if ((*data)->meals_min)
 		p_log_meals_report(philos);
 	p_util_close_global_semaphores(*data);
 	p_util_free_philos(philos);
 	p_util_free_data(data);
+	kill(0, SIGINT);
 }
 
 int	main(int ac, char **av)
