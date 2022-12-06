@@ -6,11 +6,11 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 19:09:52 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:12:30 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:41:20 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 void	p_util_free_data(t_data **all_data)
 {

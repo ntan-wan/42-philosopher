@@ -6,11 +6,11 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 07:02:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:10:21 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 int	p_util_strlen(char *str)
 {

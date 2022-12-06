@@ -6,11 +6,11 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 10:38:42 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/04 11:57:47 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 static void	p_print(t_philo *philo, t_status status, char *color, char *stat)
 {

@@ -6,11 +6,11 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 11:23:55 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/04 11:19:32 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 void	p_philo_get_forks(t_philo *philo)
 {

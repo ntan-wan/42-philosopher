@@ -6,11 +6,11 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:13:13 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../includes/philo_bonus.h"
 
 static void	p_init_data_parsing(t_data *data, char **av)
 {

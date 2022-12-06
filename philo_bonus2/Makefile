@@ -1,4 +1,4 @@
-NAME = philo
+NAME = philo_bonus
 UNAME = $(shell uname)
 
 ifeq ($(UNAME), Linux)
