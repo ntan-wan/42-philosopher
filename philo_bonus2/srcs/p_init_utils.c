@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:55:18 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 21:12:56 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	p_set_sim_meal(t_philo *philo)
 	temp_num = p_util_utoa(philo->id + 1);
 	p_util_strcat(sem_name, SEM_NAME_MEAL);
 	p_util_strcat(sem_name, temp_num);
+	sem_unlink(sem_name);
 	philo->sem_meal = sem_open(sem_name, O_CREAT, 0644, 1);
 	free(sem_name);
 	free(temp_num);
@@ -75,6 +76,9 @@ static void	p_init_global_sems(t_data *data)
 
 	if (!data)
 		return ;
+	sem_unlink(SEM_NAME_FORKS);
+	sem_unlink(SEM_NAME_LOG);
+	sem_unlink(SEM_NAME_STOP);
 	philos_total = data->philos_total;
 	data->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, 0644, philos_total);
 	data->sem_log = sem_open(SEM_NAME_LOG, O_CREAT, 0644, 1);
