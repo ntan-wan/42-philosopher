@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:40:58 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 21:01:06 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,19 @@ static void	p_sim_start(t_data *data, t_philo **philos)
 
 static void	p_philo_status_check(t_data *data)
 {
-	int	philo_status;
+	int				philo_status;
+	unsigned int	philo_is_full;
 
 	philo_status = 0;
+	philo_is_full = 0;
 	while (waitpid(-1, &philo_status, 0) != -1)
 	{
 		if (WEXITSTATUS(philo_status) == PHILO_IS_DEAD)
 			p_util_kill_philos(data);
-		else if ((data)->philo_full_count == (data)->philos_total)
+		else if (philo_is_full == (data)->philos_total)
 			p_util_kill_philos(data);
 		else if (WEXITSTATUS(philo_status) == PHILO_IS_FULL)
-			(data)->philo_full_count++;
+			philo_is_full++;
 	}
 }
 

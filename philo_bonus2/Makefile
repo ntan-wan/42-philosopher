@@ -32,11 +32,11 @@ all : $(NAME)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c
 	@mkdir -p $(OBJS_DIR)
-	@$(CC) -c $< -o $@ -I$(HEADER_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@ -I$(HEADER_DIR)
 	@echo "$(GREEN)Compiling : $< $(COLOR_OFF)"
 
 $(NAME) : $(OBJS_PREFIXED)
-	@$(CC) $(OBJS_PREFIXED) $(PTHREAD_LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS_PREFIXED) $(PTHREAD_LIB) -o $(NAME)
 	@echo "$(CYAN)$(NAME) done !$(COLOR_OFF)"
 
 bonus : all

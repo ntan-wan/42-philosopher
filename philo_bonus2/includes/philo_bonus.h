@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:45:34 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:55:15 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_data
 	sem_t			*sem_forks;
 	sem_t			*sem_sim_stop;
 	pid_t			*pids;
-	unsigned int	philo_full_count;
 }	t_data;
 
 typedef struct s_philo

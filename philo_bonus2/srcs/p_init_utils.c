@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:55:18 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	p_init_data_parsing(t_data *data, char **av)
 	data->time_to_eat = p_util_atoi(av[3]);
 	data->time_to_sleep = p_util_atoi(av[4]);
 	data->pids = p_util_calloc(data->philos_total, sizeof(pid_t));
-	data->philo_full_count = 0;
 	data->sim_stop = false;
 }
 
