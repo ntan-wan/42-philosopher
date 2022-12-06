@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 00:50:44 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:29:27 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,26 @@ static void	p_sim_end(t_data **data, pthread_t thread_monitor, t_philo **philos)
 {
 	// while (waitpid(-1, NULL, 0) != -1)
 		// ;
-	// p_kill_all_philos(*data);
-	waitpid(-1, NULL, 0);
+	// p_kill_child_philos(*data);
+	int philo_status;
+
+	philo_status = 0;
+	while (waitpid(-1, &philo_status, 0) != -1)
+	{
+		// if (WEXITSTATUS(philo_status) == PHILO_IS_DEAD)
+		if (WEXITSTATUS(philo_status) == PHILO_IS_DEAD)
+			p_kill_child_philos(*data);
+		else if ((*data)->philo_full_count == (*data)->philos_total)
+			p_kill_child_philos(*data);
+		else if (WEXITSTATUS(philo_status) == PHILO_IS_FULL)
+			(*data)->philo_full_count++;
+	}
 	if ((*data)->meals_min)
 		p_log_meals_report(philos);
 	p_util_close_global_semaphores(*data);
 	p_util_free_philos(philos);
 	p_util_free_data(data);
-	kill(0, SIGINT);
+	// kill(0, SIGINT);
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 00:47:22 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:15:53 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,28 @@ static void	*p_routine_philo_one(t_philo *philo)
 	return (NULL);
 }
 
-void p_kill_all_philos(t_data *data)
+void p_kill_child_philos(t_data *data)
 {
-	// int	i;
+	int	i;
 
-	// i = -1;
-	// while (++i < (int)data->philos_total)
-		// kill(data->pids[i], SIGKILL);
-	kill(0, SIGINT);
+	i = -1;
+	// while (++i < (int)data->philos_total - 1)
+		// kill(data->pids[i], SIGINT);
+	while (data->pids[++i])
+		kill(data->pids[i], SIGINT);
 }
+
+/*void	*philo_exit(t_philo *philo)
+{
+	// pthread_detach(philo->death_check);
+	p_util_close_global_semaphores(philo->data);
+	sem_close(philo->sem_meal);
+	free(philo->data->pids);
+	free(philo->data);
+	free(philo);
+	exit(0);
+	return (NULL);
+}*/
 
 void	*p_death_check(void *philosopher)
 {
@@ -39,6 +52,7 @@ void	*p_death_check(void *philosopher)
 
 	philo = (t_philo *)philosopher;
 	//
+	// p_util_delay(philo->data->time_start);
 	while (1)
 	{
 		time_current = p_util_get_time_in_ms();
@@ -50,11 +64,21 @@ void	*p_death_check(void *philosopher)
 			// p_log_death_report(time_current, philo);
 			p_monitor_set_sim_stop(philo->data, true);
 			sem_post(philo->sem_meal);
-			// kill(0, SIGINT);
 			break ;
 		}
+		usleep(1000);
 	}
+	exit(PHILO_IS_DEAD);
 	return (NULL);
+	// return (philo_exit(philo));
+}
+
+int	p_philo_is_full(t_philo *philo)
+{
+	t_data	*data;
+	
+	data = philo->data;
+	return (data->meals_min && philo->meals_count >= data->meals_min);
 }
 
 /* 
@@ -75,9 +99,12 @@ static void	p_routine_philo_loop(t_philo *philo)
 		p_philo_get_forks(philo);
 		p_philo_eats(philo);
 		p_philo_release_forks(philo);
+		if (p_philo_is_full(philo))
+			break ;
 		p_philo_sleeps(philo);
 		p_philo_thinks(philo);
 	}
+	exit(PHILO_IS_FULL);
 }
 
 void	*p_routine_philo(void *philosopher)

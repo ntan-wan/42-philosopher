@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/05 17:55:55 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:22:30 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 # define SUCCESS 0
 # define ERROR 1
+
+# define PHILO_IS_DEAD 100
+# define PHILO_IS_FULL 200
 
 # define BOLD "\e[1m"
 # define UNDERLINE "\x1b[4m"
@@ -72,6 +75,7 @@ typedef struct s_data
 	sem_t			*sem_forks;
 	sem_t			*sem_sim_stop;
 	pid_t			*pids;
+	unsigned int	philo_full_count;
 	
 }	t_data;
 
@@ -129,7 +133,7 @@ int		p_util_strlen(char *str);
 void	p_util_strcat(char *dst, char *src);
 int		p_util_digit_count(unsigned int num);
 char    *p_util_utoa(unsigned int num);
-void 	p_kill_all_philos(t_data *data);
+void 	p_kill_child_philos(t_data *data);
 void	p_monitor_set_sim_stop(t_data *data, bool state);
 void *p_util_calloc(size_t count, size_t size);
 #endif
