@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 17:22:30 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:39:01 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_data
 	sem_t			*sem_sim_stop;
 	pid_t			*pids;
 	unsigned int	philo_full_count;
-	
 }	t_data;
 
 typedef struct s_philo
@@ -107,8 +106,10 @@ void	p_philo_release_forks(t_philo *philo);
 void	*p_routine_philo(void *philosopher);
 
 /* monitor_utils */
-void	*p_monitor_philo(void *philosophers);
+void	*p_monitor_death(void *philosopher);
+int		p_monitor_philo_is_full(t_philo *philo);
 bool	p_monitor_sim_has_stopped(t_data *data);
+void	p_monitor_set_sim_stop(t_data *data, bool state);
 
 /* log_utils */
 void	p_log_meals_report(t_philo **philos);
@@ -118,22 +119,19 @@ void	p_log_death_report(time_t time_current, t_philo *philo);
 /* other_utils */
 int		p_util_atoi(char *str);
 time_t	p_util_get_time_in_ms(void);
-int		p_util_error_print(char *msg);
 void	p_util_delay(time_t time_start);
+void	p_util_kill_philos(t_data *data);
 void	p_util_usleep_sim_check(t_data *data, time_t time_sleep);
 
 /* other_utils2 */
-void	p_util_free_data(t_data **all_data);
-void	p_util_free_philos(t_philo **philos);
-void	p_util_close_global_semaphores(t_data *data);
-
-
-
 int		p_util_strlen(char *str);
+char	*p_util_utoa(unsigned int num);
 void	p_util_strcat(char *dst, char *src);
 int		p_util_digit_count(unsigned int num);
-char    *p_util_utoa(unsigned int num);
-void 	p_kill_child_philos(t_data *data);
-void	p_monitor_set_sim_stop(t_data *data, bool state);
-void *p_util_calloc(size_t count, size_t size);
+void	*p_util_calloc(size_t count, size_t size);
+
+/* free_utils */
+void	p_free_global_sems(t_data *data);
+void	p_util_free_data(t_data **all_data);
+void	p_util_free_philos(t_philo **philos);
 #endif

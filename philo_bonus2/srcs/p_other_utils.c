@@ -6,18 +6,12 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:38:43 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/25 21:22:25 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:26:36 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 #define ZERO_POINT_ONE_MS 100
-
-int	p_util_error_print(char *msg)
-{
-	printf("err: %s\n", msg);
-	return (ERROR);
-}
 
 int	p_util_atoi(char *str)
 {
@@ -57,4 +51,13 @@ void	p_util_usleep_sim_check(t_data *data, time_t time_to_sleep)
 			break ;
 		usleep(ZERO_POINT_ONE_MS);
 	}
+}
+
+void	p_util_kill_philos(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (data->pids[++i])
+		kill(data->pids[i], SIGINT);
 }

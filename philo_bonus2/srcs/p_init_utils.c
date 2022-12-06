@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 17:23:19 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:13:13 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	p_init_data_parsing(t_data *data, char **av)
 	data->time_to_sleep = p_util_atoi(av[4]);
 	data->pids = p_util_calloc(data->philos_total, sizeof(pid_t));
 	data->philo_full_count = 0;
-	// data->pids = malloc(sizeof(pid_t) * data->philos_total);
 	data->sim_stop = false;
 }
 
@@ -35,10 +34,10 @@ static void	p_set_sim_meal(t_philo *philo)
 {
 	char	*temp_num;
 	char	*sem_name;
-	int		total_str_len;
-	
-	total_str_len = p_util_strlen(SEM_NAME_MEAL) + p_util_digit_count(philo->id + 1);
-	sem_name = p_util_calloc(total_str_len + 1, sizeof(char));
+	int		str_len;
+
+	str_len = p_util_strlen(SEM_NAME_MEAL) + p_util_digit_count(philo->id + 1);
+	sem_name = p_util_calloc(str_len + 1, sizeof(char));
 	temp_num = p_util_utoa(philo->id + 1);
 	p_util_strcat(sem_name, SEM_NAME_MEAL);
 	p_util_strcat(sem_name, temp_num);
@@ -66,21 +65,21 @@ t_philo	**p_init_philos(t_data *data)
 		philos[i]->meals_count = 0;
 		philos[i]->time_last_meal = 0;
 		philos[i]->death_check = 0;
-		// philos[i]->sem_meal = sem_open(SEM_NAME_MEAL, O_CREAT, 0644, 1);
 		p_set_sim_meal(philos[i]);
 	}
 	return (philos);
 }
 
-static int	p_init_global_semaphores(t_data *data)
+static void	p_init_global_sems(t_data *data)
 {
-	data->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT , 0644, data->philos_total);
-	sem_unlink(SEM_NAME_FORKS);
+	unsigned int	philos_total;
+
+	if (!data)
+		return ;
+	philos_total = data->philos_total;
+	data->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, 0644, philos_total);
 	data->sem_log = sem_open(SEM_NAME_LOG, O_CREAT, 0644, 1);
-	sem_unlink(SEM_NAME_LOG);
 	data->sem_sim_stop = sem_open(SEM_NAME_STOP, O_CREAT, 0644, 1);
-	sem_unlink(SEM_NAME_STOP);
-	return (SUCCESS);
 }
 
 t_data	*p_init_data(char **av)
@@ -91,6 +90,6 @@ t_data	*p_init_data(char **av)
 	if (!data)
 		return (NULL);
 	p_init_data_parsing(data, av);
-	p_init_global_semaphores(data);
+	p_init_global_sems(data);
 	return (data);
 }

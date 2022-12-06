@@ -6,46 +6,11 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 07:02:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 13:36:27 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:10:21 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-void	p_util_close_global_semaphores(t_data *data)
-{
-	sem_close(data->sem_forks);
-	sem_close(data->sem_log);
-	sem_close(data->sem_sim_stop);
-}
-
-void	p_util_free_data(t_data **all_data)
-{
-	t_data	*data;
-
-	data = *all_data;
-	if (!data)
-		return ;
-	free(data->pids);
-	free(data);
-	*all_data = NULL;
-}
-
-void	p_util_free_philos(t_philo **philos)
-{
-	int		i;
-	t_data	*data;
-
-	i = -1;
-	data = philos[0]->data;
-	while (philos && ++i < (int)data->philos_total)
-		if (philos[i])
-		{
-			sem_close(philos[i]->sem_meal);
-			free(philos[i]);
-		}
-	free(philos);
-}
 
 int	p_util_strlen(char *str)
 {
@@ -70,7 +35,7 @@ void	p_util_strcat(char *dst, char *src)
 int	p_util_digit_count(unsigned int num)
 {
 	int	digit_count;
-	
+
 	digit_count = 0;
 	if (num == 0)
 		digit_count = 1;
@@ -82,7 +47,7 @@ int	p_util_digit_count(unsigned int num)
 	return (digit_count);
 }
 
-char    *p_util_utoa(unsigned int num)
+char	*p_util_utoa(unsigned int num)
 {
 	char	*str_num;
 	int		str_len;
@@ -101,13 +66,13 @@ char    *p_util_utoa(unsigned int num)
 	return (str_num);
 }
 
-void *p_util_calloc(size_t count, size_t size)
+void	*p_util_calloc(size_t count, size_t size)
 {
 	size_t			i;
 	unsigned char	*mem;
 
 	i = 0;
-	mem = (unsigned char*)malloc(count * size);
+	mem = (unsigned char *)malloc(count * size);
 	while (i < count)
 		mem[i++] = '\0';
 	return (mem);

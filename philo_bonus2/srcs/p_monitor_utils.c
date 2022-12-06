@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:52:32 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 15:13:32 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:38:11 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,78 +30,37 @@ bool	p_monitor_sim_has_stopped(t_data *data)
 	return (result);
 }
 
-static bool	p_philo_died(t_philo *philo)
+int	p_monitor_philo_is_full(t_philo *philo)
 {
+	t_data	*data;
+
+	data = philo->data;
+	return (data->meals_min && philo->meals_count >= data->meals_min);
+}
+
+void	*p_monitor_death(void *philosopher)
+{
+	t_philo	*philo;
 	time_t	time_current;
 	time_t	time_passed;
 
-	time_current = p_util_get_time_in_ms();
-	time_passed = time_current - philo->time_last_meal;
-	if (time_passed > philo->data->time_to_die)
-	{
-		p_log_status(philo, DIED);
-		// p_log_death_report(time_current, philo);
-		p_monitor_set_sim_stop(philo->data, true);
-		// p_kill_child_philos(philo->data);
-		sem_post(philo->sem_meal);
-		return (true);
-	}
-	return (false);
-}
-
-static bool	p_monitor_has_ended(t_philo **philos)
-{
-	int		i;
-	t_data	*data;
-	bool	all_ate_enough;
-
-	i = -1;
-	all_ate_enough = true;
-	data = philos[0]->data;
-	while (++i < (int)data->philos_total)
-	{
-		sem_wait(philos[i]->sem_meal);
-		if (p_philo_died(philos[i]))
-			return (true);
-		if (data->meals_min
-			&& philos[i]->meals_count < data->meals_min)
-			all_ate_enough = false;
-		sem_post(philos[i]->sem_meal);
-	}
-	if (data->meals_min && all_ate_enough)
-	{
-		p_monitor_set_sim_stop(data, true);
-		return (true);
-	}
-	return (false);
-}
-
-void	test(t_philo **philos)
-{
-	int	i;
-	t_data	*data;
-
-	i = 0;
-	data = philos[0]->data;
-	while (i < data->philos_total)
-		if (philos[i]->time_last_meal)
-			i++;
-}
-
-void	*p_monitor_philo(void *philosophers)
-{
-	t_philo	**philos;
-
-	philos = (t_philo **)philosophers;
-	// printf("%d\n", philos[0]->data->philos_total);
-	p_util_delay(philos[0]->data->time_start);
-	// test(philos);
-	// printf("%ld\n", philos[0]->time_last_meal);
+	philo = (t_philo *)philosopher;
+	p_util_delay(philo->data->time_start);
 	while (1)
 	{
-		if (p_monitor_has_ended(philos))
+		time_current = p_util_get_time_in_ms();
+		time_passed = time_current - philo->time_last_meal;
+		if (time_passed > philo->data->time_to_die)
+		{
+			p_log_status(philo, DIED);
+			sem_wait(philo->data->sem_log);
+			p_log_death_report(time_current, philo);
+			p_monitor_set_sim_stop(philo->data, true);
+			sem_post(philo->sem_meal);
 			break ;
+		}
 		usleep(ONE_MS);
 	}
+	exit(PHILO_IS_DEAD);
 	return (NULL);
 }
