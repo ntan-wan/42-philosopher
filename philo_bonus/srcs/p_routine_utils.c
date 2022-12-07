@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/07 17:36:42 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/07 18:03:54 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,13 @@ static void	*p_routine_philo_one(t_philo *philo)
 }
 
 /* 
-	philosopher with even id number start their routine by "thinking"
+	philosopher with even id number will be delayed at first
 	to avoid conflicts with odd id number of philosopher.
  */
 static void	p_routine_philo_loop(t_philo *philo)
 {
 	if (philo->id % 2 != 0)
-	{
-		p_log_status(philo, THINKING);
 		usleep(philo->data->time_to_eat * 1000);
-	}
 	pthread_create(&philo->death_check, NULL, p_monitor_death, philo);
 	pthread_detach(philo->death_check);
 	while (!p_monitor_sim_has_stopped(philo->data))

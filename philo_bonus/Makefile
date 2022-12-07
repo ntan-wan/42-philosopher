@@ -12,7 +12,6 @@ ifeq ($(MODE), debug)
 	CFLAGS += -fsanitize=thread
 endif
 
-
 HEADER_DIR =  includes/
 SRCS_DIR = srcs/
 SRCS = $(shell find srcs/*.c)
