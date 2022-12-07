@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:05:16 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 21:01:06 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:33:31 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,23 @@ static void	p_sim_start(t_data *data, t_philo **philos)
 static void	p_philo_status_check(t_data *data)
 {
 	int				philo_status;
-	unsigned int	philo_is_full;
+	pthread_t		philo_is_full_check;
 
 	philo_status = 0;
-	philo_is_full = 0;
+	pthread_create(&philo_is_full_check, NULL, p_monitor_is_full_check, data);
 	while (waitpid(-1, &philo_status, 0) != -1)
 	{
 		if (WEXITSTATUS(philo_status) == PHILO_IS_DEAD)
-			p_util_kill_philos(data);
-		else if (philo_is_full == (data)->philos_total)
-			p_util_kill_philos(data);
-		else if (WEXITSTATUS(philo_status) == PHILO_IS_FULL)
-			philo_is_full++;
+		{
+			data->sim_stop = true;
+			p_util_kill_all_philos(data);
+		}
 	}
+	pthread_join(philo_is_full_check, NULL);
 }
 
 static void	p_sim_end(t_data **data, t_philo **philos)
 {
-	if ((*data)->meals_min)
-		p_log_meals_report(philos);
 	p_free_global_sems(*data);
 	p_util_free_philos(philos);
 	p_util_free_data(data);

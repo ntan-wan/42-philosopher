@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 19:09:52 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:41:20 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:53:35 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,6 @@ void	p_free_global_sems(t_data *data)
 	sem_unlink(SEM_NAME_LOG);
 	sem_close(data->sem_sim_stop);
 	sem_unlink(SEM_NAME_STOP);
+	sem_close(data->sem_full);
+	sem_unlink(SEM_NAME_FULL);
 }

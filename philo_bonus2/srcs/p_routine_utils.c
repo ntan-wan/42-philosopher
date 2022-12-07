@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 09:34:05 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:36:42 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,23 @@ static void	p_routine_philo_loop(t_philo *philo)
 		p_philo_eats(philo);
 		p_philo_release_forks(philo);
 		if (p_monitor_philo_is_full(philo))
-			break ;
+		{
+			philo->is_full = true;
+			sem_post(philo->data->sem_full);
+		}
 		p_philo_sleeps(philo);
 		p_philo_thinks(philo);
 	}
-	exit(PHILO_IS_FULL);
 }
 
-void	*p_routine_philo(void *philosopher)
+void	p_routine_philo(t_philo *philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)philosopher;
 	sem_wait(philo->sem_meal);
 	philo->time_last_meal = philo->data->time_start;
 	sem_post(philo->sem_meal);
 	p_util_delay(philo->data->time_start);
 	if (philo->data->philos_total == 1)
-		return (p_routine_philo_one(philo));
+		p_routine_philo_one(philo);
 	else
 		p_routine_philo_loop(philo);
-	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:17:18 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 21:12:56 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:56:20 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ t_philo	**p_init_philos(t_data *data)
 		philos[i]->meals_count = 0;
 		philos[i]->time_last_meal = 0;
 		philos[i]->death_check = 0;
+		philos[i]->is_full = false;
 		p_set_sim_meal(philos[i]);
 	}
 	return (philos);
@@ -79,10 +80,12 @@ static void	p_init_global_sems(t_data *data)
 	sem_unlink(SEM_NAME_FORKS);
 	sem_unlink(SEM_NAME_LOG);
 	sem_unlink(SEM_NAME_STOP);
+	sem_unlink(SEM_NAME_FULL);
 	philos_total = data->philos_total;
 	data->sem_forks = sem_open(SEM_NAME_FORKS, O_CREAT, 0644, philos_total);
 	data->sem_log = sem_open(SEM_NAME_LOG, O_CREAT, 0644, 1);
 	data->sem_sim_stop = sem_open(SEM_NAME_STOP, O_CREAT, 0644, 1);
+	data->sem_full = sem_open(SEM_NAME_FULL, O_CREAT, 0644, 1);
 }
 
 t_data	*p_init_data(char **av)

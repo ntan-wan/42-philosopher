@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 11:07:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:55:15 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:34:42 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define SEM_NAME_FORKS "sem_global_forks"
 # define SEM_NAME_LOG "sem_global_log"
 # define SEM_NAME_STOP "sem_global_stop"
+# define SEM_NAME_FULL "sem_global_full"
 # define SEM_NAME_MEAL "sem_local_meal"
 
 typedef enum e_status
@@ -74,6 +75,7 @@ typedef struct s_data
 	sem_t			*sem_log;
 	sem_t			*sem_forks;
 	sem_t			*sem_sim_stop;
+	sem_t			*sem_full;
 	pid_t			*pids;
 }	t_data;
 
@@ -84,6 +86,7 @@ typedef struct s_philo
 	time_t			time_last_meal;
 	sem_t			*sem_meal;
 	t_data			*data;
+	bool			is_full;
 	pthread_t		death_check;
 }	t_philo;
 
@@ -102,12 +105,13 @@ void	p_philo_get_forks(t_philo *philo);
 void	p_philo_release_forks(t_philo *philo);
 
 /* routine_utils */
-void	*p_routine_philo(void *philosopher);
+void	p_routine_philo(t_philo *philo);
 
 /* monitor_utils */
 void	*p_monitor_death(void *philosopher);
 int		p_monitor_philo_is_full(t_philo *philo);
 bool	p_monitor_sim_has_stopped(t_data *data);
+void	*p_monitor_is_full_check(void *all_data);
 void	p_monitor_set_sim_stop(t_data *data, bool state);
 
 /* log_utils */
@@ -119,7 +123,7 @@ void	p_log_death_report(time_t time_current, t_philo *philo);
 int		p_util_atoi(char *str);
 time_t	p_util_get_time_in_ms(void);
 void	p_util_delay(time_t time_start);
-void	p_util_kill_philos(t_data *data);
+void	p_util_kill_all_philos(t_data *data);
 void	p_util_usleep_sim_check(t_data *data, time_t time_sleep);
 
 /* other_utils2 */
