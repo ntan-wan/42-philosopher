@@ -6,13 +6,19 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:57:49 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/11/27 16:42:50 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_bonus.h"
 #define VALID 0
 #define INVALID 1
+
+static int	p_error_print(char *msg)
+{
+	printf("err: %s\n", msg);
+	return (ERROR);
+}
 
 static int	is_not_num(char *str)
 {
@@ -42,17 +48,17 @@ int	is_invalid_input(int ac, char **av)
 
 	i = 0;
 	if (ac != 5 && ac != 6)
-		return (p_util_error_print("invalid num of args"));
+		return (p_error_print("invalid num of args"));
 	while (av[++i])
 	{
 		if (is_not_num(av[i]))
-			return (p_util_error_print("is not a num"));
+			return (p_error_print("is not a num"));
 		else if (av[i][0] == '-')
-			return (p_util_error_print("num must be positive"));
+			return (p_error_print("num must be positive"));
 		else if (p_util_atoi(av[i]) == 0)
-			return (p_util_error_print("num must be greater than 0"));
+			return (p_error_print("num must be greater than 0"));
 		else if (is_less_than_60ms(av[i], i))
-			return (p_util_error_print("num must be greater than 60ms"));
+			return (p_error_print("num must be greater than 60ms"));
 	}
 	return (VALID);
 }

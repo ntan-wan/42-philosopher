@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 10:38:42 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/03 16:43:15 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,12 @@ static void	p_print(t_philo *philo, t_status status, char *color, char *stat)
 
 void	p_log_status(t_philo *philo, t_status status)
 {
-	// pthread_mutex_lock(&philo->data->lock_log);
-	// if (p_monitor_sim_has_stopped(philo->data))
-	// {
-		// pthread_mutex_unlock(&philo->data->lock_log);
-		// return ;
-	// }
-	t_data	*data;
-	
-	data = philo->data;
-	sem_wait(philo->sem_log);
+	sem_wait(philo->data->sem_log);
+	if (p_monitor_sim_has_stopped(philo->data))
+	{
+		sem_post(philo->data->sem_log);
+		return ;
+	}
 	if (status == DIED)
 		p_print(philo, status, RED, "died");
 	else if (status == THINKING)
@@ -52,8 +48,7 @@ void	p_log_status(t_philo *philo, t_status status)
 		p_print(philo, status, GREEN, "is eating");
 	else if (status == SLEEPING)
 		p_print(philo, status, COLOR_OFF, "is sleeping");
-	sem_post(philo->sem_log);
-	// pthread_mutex_unlock(&philo->data->lock_log);
+	sem_post(philo->data->sem_log);
 }
 
 void	p_log_death_report(time_t time_current, t_philo *philo)
