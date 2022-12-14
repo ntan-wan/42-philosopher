@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 07:02:08 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/06 19:42:08 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:08:57 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*p_util_utoa(unsigned int num)
 		return (NULL);
 	str_num[0] = '0';
 	str_num[str_len] = '\0';
-	while (num % 10)
+	while (num)
 	{
 		str_num[--str_len] = num % 10 + '0';
 		num /= 10;
