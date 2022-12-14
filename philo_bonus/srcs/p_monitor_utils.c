@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:52:32 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/07 17:37:22 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:25:10 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ void	*p_monitor_death(void *philosopher)
 	while (1)
 	{
 		time_current = p_util_get_time_in_ms();
+		sem_wait(philo->sem_meal);
 		time_passed = time_current - philo->time_last_meal;
+		sem_post(philo->sem_meal);
 		if (time_passed > philo->data->time_to_die)
 		{
 			p_log_status(philo, DIED);
 			sem_wait(philo->data->sem_log);
 			p_monitor_set_sim_stop(philo->data, true);
-			sem_post(philo->sem_meal);
 			break ;
 		}
 		usleep(ONE_MS);

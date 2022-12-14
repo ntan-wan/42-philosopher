@@ -6,7 +6,7 @@
 /*   By: ntan-wan <ntan-wan@42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:38:43 by ntan-wan          #+#    #+#             */
-/*   Updated: 2022/12/07 17:33:31 by ntan-wan         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:25:20 by ntan-wan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ void	p_util_kill_all_philos(t_data *data)
 	int	i;
 
 	i = -1;
-	while (data->pids[++i])
+	while (++i < (int)data->philos_total)
 		kill(data->pids[i], SIGINT);
 }
